@@ -1,0 +1,44 @@
+# Build outputs
+/dist/
+/target/
+src-tauri/target/
+/build/
+node_modules/
+
+# Local config
+.claude/settings.local.json
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Env
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+logs/
+
+# User data (never commit)
+/app-data/
+*.db
+*.sqlite
+*.sqlite3
+
+# Model/OCR files
+*.model
+*.onnx
+*.bin
+
+# Secrets
+*.pem
+*.key
+credentials.json

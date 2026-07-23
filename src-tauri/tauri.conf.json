@@ -1,0 +1,62 @@
+{
+  "$schema": "https://raw.githubusercontent.com/nicegui/tauri-v2/main/.schemas/desktop-schema.json",
+  "productName": "local-translation",
+  "version": "0.1.0",
+  "identifier": "com.leidezhi.local-translation",
+  "build": {
+    "frontendDist": "../dist",
+    "devUrl": "http://localhost:1420",
+    "beforeDevCommand": "npm run dev",
+    "beforeBuildCommand": "npm run build"
+  },
+  "app": {
+    "title": "本地翻译",
+    "windows": [
+      {
+        "title": "本地翻译",
+        "width": 900,
+        "height": 650,
+        "resizable": true,
+        "fullscreen": false,
+        "center": true,
+        "minWidth": 400,
+        "minHeight": 300
+      }
+    ],
+    "security": {
+      "csp": null
+    },
+    "trayIcon": {
+      "id": "main",
+      "iconPath": "icons/icon.png",
+      "tooltip": "本地翻译"
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ]
+  },
+  "plugins": {
+    "global-shortcut": {},
+    "clipboard-manager": {},
+    "dialog": {},
+    "fs": {
+      "scope": {
+        "allow": ["**"]
+      }
+    },
+    "store": {},
+    "sql": {
+      "preload": {
+        "db": "sqlite:local-translation.db"
+      }
+    }
+  }
+}

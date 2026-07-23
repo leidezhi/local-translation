@@ -1,0 +1,15 @@
+{
+  "identifier": "default",
+  "description": "Default capability for the app",
+  "windows": ["main"],
+  "permissions": [
+    "core:default",
+    "shell:allow-open",
+    "global-shortcut:default",
+    "clipboard-manager:default",
+    "dialog:default",
+    "fs:default",
+    "store:default",
+    "sql:default"
+  ]
+}
