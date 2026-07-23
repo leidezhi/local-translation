@@ -54,7 +54,7 @@ ${sanitized}`;
  */
 export function buildTranslationPrompt(
   request: TranslationRequest,
-  _thinking = false,
+  thinking = false,
 ): { system: string; user: string } {
   const system = buildSystemPrompt(
     request.sourceLanguage,
@@ -62,7 +62,11 @@ export function buildTranslationPrompt(
     request.mode,
   );
 
-  const user = buildUserMessage(request.sourceText, request.glossary);
+  let user = buildUserMessage(request.sourceText, request.glossary);
+
+  if (!thinking) {
+    user += "\n\n/no_think";
+  }
 
   return { system, user };
 }
