@@ -57,20 +57,27 @@ export class OllamaProvider implements LlmProvider {
     const { system, user } = buildTranslationPrompt(request, thinking);
 
     this.abortController = new AbortController();
-    const linkedSignal = AbortSignal.any([signal, this.abortController.signal]);
+
+    // Manual signal linking — AbortSignal.any() is not available in Tauri WebView
+    const onExternalAbort = () => this.abortController!.abort();
+    if (signal.aborted) {
+      this.abortController.abort();
+    } else {
+      signal.addEventListener("abort", onExternalAbort, { once: true });
+    }
 
     const resp = await fetch(`${this.config.baseUrl}/api/chat`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        model: this.config.model,
+        model: thinking ? this.config.model : `${this.config.model}/no_think`,
         stream: true,
         messages: [
           { role: "system", content: system },
           { role: "user", content: user },
         ],
       }),
-      signal: linkedSignal,
+      signal: this.abortController.signal,
     });
 
     if (!resp.ok) {

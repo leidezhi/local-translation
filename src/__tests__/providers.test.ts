@@ -91,6 +91,7 @@ describe("OllamaProvider", () => {
       { ...baseRequest, sourceText: "Hello world", sourceLanguage: "en", targetLanguage: "zh" },
       () => {},
       new AbortController().signal,
+      true, // thinking enabled
     );
 
     const call = mockFetch.mock.calls[0];
@@ -100,6 +101,15 @@ describe("OllamaProvider", () => {
     expect(body.stream).toBe(true);
     expect(body.messages[0].role).toBe("system");
     expect(body.messages[1].role).toBe("user");
+  });
+
+  it("appends /no_think when thinking is disabled", async () => {
+    mockFetch.mockResolvedValueOnce(mockOllamaStream(["test"]));
+
+    await provider.translate(baseRequest, () => {}, new AbortController().signal, false);
+
+    const body = JSON.parse(mockFetch.mock.calls[0][1].body);
+    expect(body.model).toBe("qwen2.5:7b/no_think");
   });
 
   it("healthCheck returns true on success", async () => {
