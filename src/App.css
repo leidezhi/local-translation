@@ -1,24 +1,255 @@
-.container {
-  margin: 0 auto;
-  padding: 2rem;
+.app-container {
   max-width: 800px;
+  margin: 0 auto;
+  padding: 1.5rem;
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
 }
 
-h1 {
-  font-size: 2rem;
+.app-header {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.app-header h1 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.app-subtitle {
+  font-size: 0.8rem;
+  color: #888;
+}
+
+/* Language Selector */
+.lang-selector {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.lang-selector select {
+  flex: 1;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  background: white;
+}
+
+.lang-selector button {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background: white;
+  cursor: pointer;
+  font-size: 1.2rem;
+}
+
+.lang-selector button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Translation Panel */
+.translation-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.input-area textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-family: inherit;
+  resize: vertical;
+  min-height: 120px;
+}
+
+.input-area textarea:focus {
+  outline: none;
+  border-color: #4a90d9;
+  box-shadow: 0 0 0 2px rgba(74, 144, 217, 0.2);
+}
+
+.input-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.input-actions button {
+  padding: 0.5rem 1.25rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  background: #4a90d9;
+  color: white;
+}
+
+.input-actions button:disabled {
+  background: #aaa;
+  cursor: not-allowed;
+}
+
+.cancel-btn {
+  background: #e74c3c !important;
+}
+
+.reset-btn {
+  background: #888 !important;
+}
+
+/* Output */
+.output-area {
+  min-height: 80px;
+}
+
+.streaming-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #4a90d9;
+  font-size: 0.85rem;
   margin-bottom: 0.5rem;
 }
 
-.status {
-  margin-top: 1rem;
-  padding: 0.5rem 1rem;
+.pulse {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #4a90d9;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+.result-box {
+  background: #f0f4f8;
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.result-text {
+  white-space: pre-wrap;
+  line-height: 1.6;
+  font-size: 1rem;
+}
+
+.copy-btn {
+  margin-top: 0.75rem;
+  padding: 0.35rem 0.75rem;
+  border: 1px solid #ccc;
   border-radius: 4px;
-  background: #4fc08d;
-  color: white;
+  background: white;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.copy-btn:hover {
+  background: #e8e8e8;
+}
+
+.error-box {
+  background: #fff0f0;
+  border: 1px solid #fcc;
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.error-msg {
+  color: #c0392b;
+  font-weight: 500;
+  margin: 0 0 0.25rem;
+}
+
+.error-suggestion {
+  color: #888;
+  font-size: 0.85rem;
+  margin: 0;
+}
+
+.cancelled-box {
+  color: #888;
+  font-style: italic;
+  padding: 0.5rem 0;
+}
+
+.placeholder {
+  color: #aaa;
+  font-style: italic;
+  padding: 1rem 0;
+}
+
+.setup-hint {
+  margin-top: 2rem;
+  padding: 1rem;
+  background: #fffbe6;
+  border: 1px solid #ffe58f;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  color: #8a6d3b;
+}
+
+.setup-hint p {
+  margin: 0.25rem 0;
+}
+
+.setup-hint code {
+  background: #f0e8c0;
+  padding: 0.1rem 0.3rem;
+  border-radius: 3px;
+  font-size: 0.85em;
+}
+
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+  body {
+    background: #1a1a1a;
+    color: #e0e0e0;
+  }
+
+  .lang-selector select,
+  .lang-selector button {
+    background: #2a2a2a;
+    border-color: #444;
+    color: #e0e0e0;
+  }
+
+  .input-area textarea {
+    background: #2a2a2a;
+    border-color: #444;
+    color: #e0e0e0;
+  }
+
+  .result-box {
+    background: #2a2a2a;
+  }
+
+  .copy-btn {
+    background: #333;
+    border-color: #555;
+    color: #e0e0e0;
+  }
+
+  .error-box {
+    background: #2a1010;
+    border-color: #5a2020;
+  }
+
+  .setup-hint {
+    background: #2a2510;
+    border-color: #5a5020;
+    color: #b8a060;
+  }
 }
