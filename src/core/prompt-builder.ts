@@ -52,9 +52,11 @@ ${sanitized}`;
  * Build the full prompt (system + user) for a translation request.
  * Returns { system: string, user: string } ready for the LLM API.
  */
+const NO_THINKING_INSTRUCTION = `\n\n注意：请直接输出译文，不要展示任何思考过程或分析。只输出翻译结果。`;
+
 export function buildTranslationPrompt(
   request: TranslationRequest,
-  _thinking = false,
+  thinking = false,
 ): { system: string; user: string } {
   const system = buildSystemPrompt(
     request.sourceLanguage,
@@ -62,7 +64,11 @@ export function buildTranslationPrompt(
     request.mode,
   );
 
-  const user = buildUserMessage(request.sourceText, request.glossary);
+  let user = buildUserMessage(request.sourceText, request.glossary);
+
+  if (!thinking) {
+    user += NO_THINKING_INSTRUCTION;
+  }
 
   return { system, user };
 }
