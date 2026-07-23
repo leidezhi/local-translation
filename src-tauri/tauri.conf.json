@@ -33,20 +33,5 @@
       "icons/icon.ico"
     ]
   },
-  "plugins": {
-    "global-shortcut": {},
-    "clipboard-manager": {},
-    "dialog": {},
-    "fs": {
-      "scope": {
-        "allow": ["**"]
-      }
-    },
-    "store": {},
-    "sql": {
-      "preload": {
-        "db": "sqlite:local-translation.db"
-      }
-    }
-  }
+  "plugins": {}
 }

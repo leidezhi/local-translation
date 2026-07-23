@@ -11,11 +11,8 @@ function createProvider(): LlmProvider | null {
   // Try Ollama first (most common local setup)
   // In production, this reads from settings
   const ollamaUrl = localStorage.getItem("ollama_url") || "http://localhost:11434";
-  const ollamaModel = localStorage.getItem("ollama_model") || "";
-
-  if (ollamaModel) {
-    return new OllamaProvider({ baseUrl: ollamaUrl, model: ollamaModel });
-  }
+  const ollamaModel = localStorage.getItem("ollama_model") || "qwen3-4b-fixed";
+  return new OllamaProvider({ baseUrl: ollamaUrl, model: ollamaModel });
 
   const openAiUrl = localStorage.getItem("openai_url") || "";
   const openAiModel = localStorage.getItem("openai_model") || "";
