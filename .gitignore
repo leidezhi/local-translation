@@ -42,3 +42,4 @@ logs/
 *.pem
 *.key
 credentials.json
+src-tauri/gen/
