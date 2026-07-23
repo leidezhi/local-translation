@@ -23,6 +23,28 @@
   color: #888;
 }
 
+.tab-nav {
+  margin-left: auto;
+  display: flex;
+  gap: 0.25rem;
+}
+
+.tab-nav button {
+  padding: 0.35rem 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background: transparent;
+  font-size: 0.85rem;
+  cursor: pointer;
+  color: inherit;
+}
+
+.tab-nav button.active {
+  background: #4a90d9;
+  color: white;
+  border-color: #4a90d9;
+}
+
 /* Language Selector */
 .lang-selector {
   display: flex;
@@ -205,6 +227,80 @@
   margin: 0.25rem 0;
 }
 
+/* Settings Panel */
+.settings-panel {
+  max-width: 600px;
+}
+
+.settings-panel h2 {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+}
+
+.settings-panel section {
+  margin-bottom: 1.5rem;
+}
+
+.settings-panel h3 {
+  font-size: 0.9rem;
+  color: #888;
+  margin: 0 0 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.settings-panel label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.settings-panel input,
+.settings-panel select {
+  display: block;
+  width: 100%;
+  margin-top: 0.2rem;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  background: white;
+  color: #333;
+}
+
+.settings-panel input:focus,
+.settings-panel select:focus {
+  outline: none;
+  border-color: #4a90d9;
+}
+
+.checkbox-label {
+  display: flex !important;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+.checkbox-label input {
+  width: auto;
+  margin: 0;
+}
+
+.settings-actions {
+  padding-top: 1rem;
+  border-top: 1px solid #eee;
+}
+
+.settings-actions .reset-btn {
+  padding: 0.5rem 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background: white;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
 .setup-hint code {
   background: #f0e8c0;
   padding: 0.1rem 0.3rem;
@@ -251,5 +347,31 @@
     background: #2a2510;
     border-color: #5a5020;
     color: #b8a060;
+  }
+
+  .tab-nav button {
+    border-color: #444;
+  }
+
+  .tab-nav button.active {
+    background: #4a90d9;
+    border-color: #4a90d9;
+  }
+
+  .settings-panel input,
+  .settings-panel select {
+    background: #2a2a2a;
+    border-color: #444;
+    color: #e0e0e0;
+  }
+
+  .settings-actions {
+    border-color: #333;
+  }
+
+  .settings-actions .reset-btn {
+    background: #333;
+    border-color: #555;
+    color: #e0e0e0;
   }
 }
