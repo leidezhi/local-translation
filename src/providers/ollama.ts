@@ -89,24 +89,55 @@ export class OllamaProvider implements LlmProvider {
     if (!reader) throw classifyNetworkError(new Error("Response body is null"));
 
     const decoder = new TextDecoder();
-    let buffer = "";
+    let lineBuffer = "";
+    // Streaming think-tag filter state (only used when !thinking)
+    let acc = "";
+    let inThink = false;
+
+    const emitFiltered = (token: string) => {
+      acc += token;
+      while (acc.length > 0) {
+        if (inThink) {
+          const endIdx = acc.indexOf("</think>");
+          if (endIdx === -1) break;
+          acc = acc.slice(endIdx + 8);
+          inThink = false;
+        }
+        const startIdx = acc.indexOf("<think>");
+        if (startIdx === -1) {
+          onToken(acc);
+          acc = "";
+          break;
+        }
+        if (startIdx > 0) {
+          onToken(acc.slice(0, startIdx));
+        }
+        acc = acc.slice(startIdx + 7);
+        inThink = true;
+      }
+    };
 
     while (true) {
       const { done, value } = await reader.read();
 
       if (value) {
-        buffer += decoder.decode(value, { stream: true });
+        lineBuffer += decoder.decode(value, { stream: true });
       }
 
-      const lines = buffer.split("\n");
-      buffer = lines.pop() ?? "";
+      const lines = lineBuffer.split("\n");
+      lineBuffer = lines.pop() ?? "";
 
       for (const line of lines) {
         if (line.trim() === "") continue;
         try {
           const json: OllamaResponse = JSON.parse(line);
           if (json.message?.content) {
-            onToken(json.message.content);
+            const token = json.message.content;
+            if (thinking) {
+              onToken(token);
+            } else {
+              emitFiltered(token);
+            }
           }
         } catch {
           // skip malformed lines
@@ -114,15 +145,21 @@ export class OllamaProvider implements LlmProvider {
       }
 
       if (done) {
-        // Flush remaining buffer
-        if (buffer.trim()) {
+        // Flush any remaining buffered data
+        if (lineBuffer.trim()) {
           try {
-            const json: OllamaResponse = JSON.parse(buffer);
+            const json: OllamaResponse = JSON.parse(lineBuffer);
             if (json.message?.content) {
-              onToken(json.message.content);
+              if (thinking) {
+                onToken(json.message.content);
+              } else {
+                emitFiltered(json.message.content);
+              }
             }
           } catch { /* ignore */ }
         }
+        // Emit any trapped leftovers (e.g. unclosed think tag at end)
+        if (!thinking && acc) onToken(acc);
         break;
       }
     }

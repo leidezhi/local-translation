@@ -103,14 +103,22 @@ describe("OllamaProvider", () => {
     expect(body.messages[1].role).toBe("user");
   });
 
-  it("appends /no_think to user message when thinking is disabled", async () => {
-    mockFetch.mockResolvedValueOnce(mockOllamaStream(["test"]));
+  it("filters out think tags when thinking is disabled", async () => {
+    // Model outputs: <think>reasoning</think> 你好
+    mockFetch.mockResolvedValueOnce(
+      mockOllamaStream(["<think>", "分析", "</think>", "你好"]),
+    );
 
-    await provider.translate(baseRequest, () => {}, new AbortController().signal, false);
+    const tokens: string[] = [];
+    await provider.translate(
+      baseRequest,
+      (t) => tokens.push(t),
+      new AbortController().signal,
+      false,
+    );
 
-    const body = JSON.parse(mockFetch.mock.calls[0][1].body);
-    expect(body.model).toBe("qwen3-4b-fixed");
-    expect(body.messages[1].content).toContain("/no_think");
+    // Think content should be filtered out
+    expect(tokens.join("")).toBe("你好");
   });
 
   it("healthCheck returns true on success", async () => {
