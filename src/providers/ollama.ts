@@ -70,7 +70,7 @@ export class OllamaProvider implements LlmProvider {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        model: this.config.model,
+        model: thinking ? this.config.model : `${this.config.model}/no_think`,
         stream: true,
         messages: [
           { role: "system", content: system },

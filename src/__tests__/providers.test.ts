@@ -71,7 +71,7 @@ describe("OllamaProvider", () => {
     const mod = await import("../providers/ollama");
     provider = new mod.OllamaProvider({
       baseUrl: "http://localhost:11434",
-      model: "qwen2.5:7b",
+      model: "qwen3-4b-fixed",
     });
   });
 
@@ -97,20 +97,19 @@ describe("OllamaProvider", () => {
     const call = mockFetch.mock.calls[0];
     expect(call[0]).toContain("/api/chat");
     const body = JSON.parse(call[1].body);
-    expect(body.model).toBe("qwen2.5:7b");
+    expect(body.model).toBe("qwen3-4b-fixed");
     expect(body.stream).toBe(true);
     expect(body.messages[0].role).toBe("system");
     expect(body.messages[1].role).toBe("user");
   });
 
-  it("adds no-thinking instruction when thinking is disabled", async () => {
+  it("appends /no_think to model when thinking is disabled", async () => {
     mockFetch.mockResolvedValueOnce(mockOllamaStream(["test"]));
 
     await provider.translate(baseRequest, () => {}, new AbortController().signal, false);
 
     const body = JSON.parse(mockFetch.mock.calls[0][1].body);
-    expect(body.model).toBe("qwen2.5:7b"); // no /no_think suffix
-    expect(body.messages[1].content).toContain("不要展示任何思考过程");
+    expect(body.model).toBe("qwen3-4b-fixed/no_think");
   });
 
   it("healthCheck returns true on success", async () => {
