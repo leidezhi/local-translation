@@ -51,9 +51,10 @@ export class OllamaProvider implements LlmProvider {
     request: TranslationRequest,
     onToken: (token: string) => void,
     signal: AbortSignal,
+    thinking = false,
   ): Promise<void> {
     const { buildTranslationPrompt } = await import("../core/prompt-builder");
-    const { system, user } = buildTranslationPrompt(request);
+    const { system, user } = buildTranslationPrompt(request, thinking);
 
     this.abortController = new AbortController();
     const linkedSignal = AbortSignal.any([signal, this.abortController.signal]);

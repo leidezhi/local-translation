@@ -67,6 +67,7 @@ export interface LlmProvider {
     request: TranslationRequest,
     onToken: (token: string) => void,
     signal: AbortSignal,
+    thinking?: boolean,
   ): Promise<void>;
 }
 

@@ -5,7 +5,7 @@ interface Props {
   status: TaskStatus;
   translatedText: string;
   error: ClassifiedError | null;
-  onTranslate: (text: string) => void;
+  onTranslate: (text: string, thinking?: boolean) => void;
   onCancel: () => void;
   onReset: () => void;
 }
@@ -19,6 +19,7 @@ export const TranslationPanel: React.FC<Props> = ({
   onReset,
 }) => {
   const [input, setInput] = useState("");
+  const [thinking, setThinking] = useState(false);
 
   const isTranslating = status === "translating";
   const isCompleted = status === "completed";
@@ -27,7 +28,7 @@ export const TranslationPanel: React.FC<Props> = ({
 
   const handleSubmit = () => {
     if (input.trim()) {
-      onTranslate(input.trim());
+      onTranslate(input.trim(), thinking);
     }
   };
 
@@ -49,6 +50,15 @@ export const TranslationPanel: React.FC<Props> = ({
           disabled={isTranslating}
         />
         <div className="input-actions">
+          <label className="think-checkbox">
+            <input
+              type="checkbox"
+              checked={thinking}
+              onChange={(e) => setThinking(e.target.checked)}
+              disabled={isTranslating}
+            />
+            思考
+          </label>
           <button
             type="button"
             onClick={handleSubmit}

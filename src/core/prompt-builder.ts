@@ -52,14 +52,35 @@ ${sanitized}`;
  * Build the full prompt (system + user) for a translation request.
  * Returns { system: string, user: string } ready for the LLM API.
  */
+const THINKING_APPEND = `
+【思考要求】
+请先进行深度翻译分析，包括：
+- 原文的核心含义与语境
+- 关键术语的译法选择
+- 需要特别注意的翻译难点
+
+分析完成后，以"---"分隔，然后给出最终译文。输出格式：
+
+【思考】
+（你的分析）
+
+---
+【译文】
+（最终翻译结果）`;
+
 export function buildTranslationPrompt(
   request: TranslationRequest,
+  thinking = false,
 ): { system: string; user: string } {
-  const system = buildSystemPrompt(
+  let system = buildSystemPrompt(
     request.sourceLanguage,
     request.targetLanguage,
     request.mode,
   );
+
+  if (thinking) {
+    system += THINKING_APPEND;
+  }
 
   const user = buildUserMessage(request.sourceText, request.glossary);
 

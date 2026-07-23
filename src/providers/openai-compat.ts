@@ -57,8 +57,9 @@ export class OpenAiCompatibleProvider implements LlmProvider {
     request: TranslationRequest,
     onToken: (token: string) => void,
     signal: AbortSignal,
+    thinking = false,
   ): Promise<void> {
-    const { system, user } = buildTranslationPrompt(request);
+    const { system, user } = buildTranslationPrompt(request, thinking);
 
     const headers: Record<string, string> = {
       "Content-Type": "application/json",

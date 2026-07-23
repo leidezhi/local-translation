@@ -100,6 +100,21 @@
   box-shadow: 0 0 0 2px rgba(74, 144, 217, 0.2);
 }
 
+.think-checkbox {
+  display: flex !important;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.85rem;
+  color: #666;
+  cursor: pointer;
+  padding: 0.5rem 0;
+}
+
+.think-checkbox input {
+  width: auto;
+  margin: 0;
+}
+
 .input-actions {
   display: flex;
   gap: 0.5rem;

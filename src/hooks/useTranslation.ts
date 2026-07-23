@@ -39,7 +39,7 @@ export function useTranslation(opts: UseTranslationOptions) {
   }, []);
 
   const translate = useCallback(
-    async (text: string) => {
+    async (text: string, thinking = false) => {
       if (!opts.provider) {
         setState({
           status: "failed",
@@ -82,6 +82,7 @@ export function useTranslation(opts: UseTranslationOptions) {
             );
           },
           controller.signal,
+          thinking,
         );
 
         setState((s) =>
